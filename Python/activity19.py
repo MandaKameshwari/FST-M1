@@ -1,6 +1,7 @@
 # Import pandas
 import pandas
 from pandas import ExcelWriter
+from pandas import ExcelFile
  
 # Create a dictionary that will be used to create the DataFrame
 data = {
@@ -17,5 +18,7 @@ dataframe = pandas.DataFrame(data)
 print(dataframe)
  
 # Write the dataframe to a Excel file
-writer = ExcelWriter('sample.xlsx')
+writer = ExcelWriter("vehicles.xlsx")
+
 dataframe.to_excel(writer, 'Sheet1', index = False)
+writer.save()
