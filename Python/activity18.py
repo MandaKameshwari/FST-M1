@@ -2,7 +2,7 @@
 import pandas
  
 # Read the CSV file and store it into a DataFrame
-dataframe = pandas.read_csv("sample.csv")
+dataframe = pandas.read_csv("data.csv")
  
 # Print the full data
 print("Full Data: ")
