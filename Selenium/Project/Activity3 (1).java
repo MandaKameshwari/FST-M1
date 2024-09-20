@@ -1,41 +1,78 @@
-package Project;
+package stepDefinitions;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.And;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Assert;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Activity3 {
-	WebDriver driver;
+import java.time.Duration;
 
-    @BeforeClass
-    public void beforeClass() {
-        // Set up the Firefox driver
+public class Activity3 extends Base {
+
+    Alert alert;
+
+    @Given("user is on the page")
+    public void navigateToPage(){
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
-
-        //Open browser
-        driver.get("https://alchemy.hguy.co/crm/index.php?action=Login&module=Users");
+        //Optional: Maximize the browser window
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        driver.get("https://v1.training-support.net/selenium/javascript-alerts");
     }
 
-    @Test
-    public void getCopyrightText() {
-    	
-    	if(driver.findElement(By.xpath("//a[@id='admin_options']")).isDisplayed()) {
-    	   String copyrightText= driver.findElement(By.xpath("//a[@id='admin_options']")).getText();
-    	   System.out.println("Copyright text in the footer: "+copyrightText);
-    	}
-    	
-    
+    @When("user clicks the Simple Alert button")
+    public void clickSimpleAlertButton(){
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("simple")));
+        driver.findElement(By.id("simple")).click();
     }
 
-    @AfterClass
-    public void afterClass() {
-        //Close browser
-        driver.close();
+    @When("user clicks the Confirm Alert button")
+    public void clickConfirmAlertButton(){
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("confirm")));
+        driver.findElement(By.id("confirm")).click();
+    }
+
+    @When("user clicks the Prompt Alert button")
+    public void clickPromptAlertButton(){
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("prompt")));
+        driver.findElement(By.id("prompt")).click();
+    }
+
+    @Then("alert opens")
+    public void switchToAlert(){
+        alert = driver.switchTo().alert();
+    }
+
+    @And("read the text from it and print it")
+    public void readAlertText(){
+        System.out.println(alert.getText());
+    }
+
+    @And("^write a custom message in it$")
+    public void writeToPrompt() {
+        alert.sendKeys("Custom Message");
+    }
+
+    @And("close the alert")
+    public void closeAlert(){
+        alert.accept();
+    }
+
+    @And("close the alert with Cancel")
+    public void CloseAlertCancel(){
+        alert.dismiss();
+    }
+
+    @And("close Browser")
+    public void closeBrowser(){
+        driver.quit();
     }
 }
